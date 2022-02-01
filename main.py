@@ -44,7 +44,8 @@ def html_parse(html, zh_name, en_name):
     tables = soup.find_all(name='table', attrs='wikitable')
     links = re.findall(r'data-src="(.*?)"', html)
     count = 0
-    links_dic = lan_dict.fromkeys(links)
+    di = {}
+    links_dic = di.fromkeys(links)
     links = list(links_dic.keys())
     for num in range(2, len(tables)):
         table = tables[num]
@@ -58,10 +59,8 @@ def html_parse(html, zh_name, en_name):
             file_path = save_mp3(links[count], file_name, f'{root_path}/{zh_name}/{lan_dict[index]}')
             title.voices.append(file_path)
             count += 1
-
-        voice_json.titles.append(json.dumps(title.to_dic(), ensure_ascii=False))
-    return json.dumps(
-        voice_json.to_dic(), ensure_ascii=False)
+        voice_json.titles.append(title.to_dic())
+    return voice_json.to_dic()
 
 
 def parse_str(string):
