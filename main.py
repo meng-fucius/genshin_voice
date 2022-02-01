@@ -12,17 +12,22 @@ import voice_info as vo
 import os
 import roles
 
-root_path = '/Users/zhangmeng/genshin/语音'
+root_path = '/Users/zhangmeng/rain_bow_genshin_voices/genshin/语音'
 lan_dict = {1: 'zh', 2: 'jp', 3: 'en', 4: 'kr'}
+json_path = "/Users/zhangmeng/rain_bow_genshin_voices/assets/voice.json"
 
 
 def role_main():
     json_list = []
+    f = open(f'{json_path}', encoding="utf-8")
+    json_list = json.load(f)
     for role in roles.roles:
+        if os.path.exists(f'{root_path}/{role.zh_name}'):
+            continue
         html_text = download_htmls(role.zh_name)
         voice_json = html_parse(html_text, role.zh_name, role.en_name)
         json_list.append(voice_json)
-    with open("/Users/zhangmeng/genshin/voice.json", "w") as fd:
+    with open(json_path, "w") as fd:
         json.dump(json_list, fd, ensure_ascii=False)
         print("json文件输出完成")
 
